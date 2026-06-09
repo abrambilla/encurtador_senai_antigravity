@@ -1,0 +1,23 @@
+Por favor, atue como um orquestrador do meu projeto.
+
+Preciso que você crie o plano de desenvolvimento e a estrutura de arquivos para um "encurtador de links", feito com react, vite e firebase (Firestore e Auth)
+
+O projeto seguirá esses requisitos:
+1 - Linguagem: Português (Brazil)
+2 - Tela de login moderna (Modo escuro, minimalista e responsivo)
+3 - Login com e-mail e senha com possibilidade de conectar à conta google
+4 - Apenas usuários logados acessam a área restrita. O redirecionamento de links (/r/abc123) deve funcionar sem login.
+5 - Área restrita:
+	5.1 - Campo para colar URL longa
+	5.2 - Botão "Encurtar" com função de:
+		5.2.1 - Gerar código de 6 caracteres aleatoriamente
+		5.2.3 - Salva no firestore vinculado ao id do usuário local
+6 - Lista em tempo real (onSnapshot do Firestore) exibindo os links criados pelo usuário: URL Original, Link Encurtado, Contador de Cliques, Data, Botão de copiar e botão de excluir
+7 - Rota de redirecionamento (/r/:code): Quando acessada por qualquer pessoa, busca no firestore a URL original, incrementa o contador de cliques e redireciona.
+
+O que eu preciso que me entregue agora:
+-> A estrutura de pastas sugerida para o projeto React/Vite
+-> A modelagem do documento da coleção "links" no firestore
+-> As regras de segurança necessárias para o firestore (permitido escrita/leitura para usuários autenticados na coleção dos seus próprios links e leitura publica geral apenas para o redirecionamento.
+-> O modelo do arquivo ".env.example" com as variáveis necessárias para o firebase
+-> Não escreva o código nos componentes do react ainda, apenas monte o planejamento arquitetural detalhado dos arquivos para que eu possa passar para outro assistente de codificação.

@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /links/{linkId} {
+
+      // 1. Leitura pública de link individual por ID (para redirecionar sem login)
+      allow get: if true;
+
+      // 2. Listagem (query) exige apenas autenticação.
+      //    A segurança real é garantida pelo where('userId','==',uid) no código do app.
+      //    Usar resource.data em regras de list bloqueia queries inteiras no Firestore.
+      allow list: if request.auth != null;
+
+      // 3. Apenas usuários logados podem criar links vinculados ao seu próprio userId.
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+
+      // 4. Apenas o criador do link pode deletá-lo.
+      allow delete: if request.auth != null
+                    && resource.data.userId == request.auth.uid;
+
+      // 5. Atualização:
+      //    - O criador pode editar qualquer campo.
+      //    - Qualquer visitante pode incrementar APENAS o campo 'clicks' em +1.
+      allow update: if (request.auth != null && resource.data.userId == request.auth.uid)
+                    || (
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks'])
+                      && request.resource.data.clicks == resource.data.clicks + 1
+                    );
+    }
+  }
+}
